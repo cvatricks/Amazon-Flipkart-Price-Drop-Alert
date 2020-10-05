@@ -7,7 +7,7 @@ const { Telegraf } = require("telegraf");
 
 let { data } = require("./data");
 
-const BOT_TOKEN = "1380063528:AAGfSUVAdgiFuxmXcT6FZoYtsJIQ565GdFs";
+const BOT_TOKEN = "BOT_TOKEN_GOES HERE";
 const SENDER_EMAIL = "EMAIL ADRESS FROM WHICH YOU WANT TO SEND NOTIFICATIONS";
 const SENDER_PASS = "EMAIL PASSWORD";
 
