@@ -7,9 +7,9 @@ const { Telegraf } = require("telegraf");
 
 let { data } = require("./data");
 
-const BOT_TOKEN = "BOT_TOKEN_GOES HERE";
-const SENDER_EMAIL = "EMAIL ADRESS FROM WHICH YOU WANT TO SEND NOTIFICATIONS";
-const SENDER_PASS = "EMAIL PASSWORD";
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const SENDER_EMAIL = process.env.SENDER_EMAIL;
+const SENDER_PASS = process.env.SENDER_PASS;
 
 const bot = new Telegraf(BOT_TOKEN);
 let users = data;
@@ -89,7 +89,7 @@ bot.command("track", async (ctx) => {
       );
       updateData();
     } else {
-      ctx.reply("Something went wrong, maybe product is out of wrong.");
+      ctx.reply("Something went wrong, maybe product is out of stock.");
     }
   } else {
     ctx.reply("PLEASE SEND A VALID LINK.");
