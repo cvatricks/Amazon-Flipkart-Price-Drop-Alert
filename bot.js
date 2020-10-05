@@ -7,7 +7,7 @@ const { Telegraf } = require("telegraf");
 
 let { data } = require("./data");
 
-const BOT_TOKEN = "PUT YOUR BOT TOKEN HERE";
+const BOT_TOKEN = "1380063528:AAGfSUVAdgiFuxmXcT6FZoYtsJIQ565GdFs";
 const SENDER_EMAIL = "EMAIL ADRESS FROM WHICH YOU WANT TO SEND NOTIFICATIONS";
 const SENDER_PASS = "EMAIL PASSWORD";
 
@@ -44,6 +44,8 @@ bot.command("start", (ctx) => {
     user.anydrop = false;
     user.kick = true;
     users.push(user);
+  } else {
+    user = userExists;
   }
   updateData();
 });
@@ -78,13 +80,17 @@ bot.command("track", async (ctx) => {
   if (user) {
     user.tasks.push(link);
     let price = await curPrice(link);
-    user.initPrice.push(price);
-    ctx.reply(
-      `Current price is ${price}.\nSet min price using /price command.\neg: /price ${
-        price - 150
-      }`
-    );
-    updateData();
+    if (price) {
+      user.initPrice.push(price);
+      ctx.reply(
+        `Current price is ${price}.\nSet min price using /price command.\neg: /price ${
+          price - 150
+        }`
+      );
+      updateData();
+    } else {
+      ctx.reply("Something went wrong, maybe product is out of wrong.");
+    }
   } else {
     ctx.reply("PLEASE SEND A VALID LINK.");
   }
