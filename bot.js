@@ -1,7 +1,6 @@
 const ch = require("cheerio");
 const CronJob = require("cron").CronJob;
 const nodemailer = require("nodemailer");
-const rp = require("request-promise");
 const axios = require("axios");
 const fs = require("fs");
 const { Telegraf } = require("telegraf");
