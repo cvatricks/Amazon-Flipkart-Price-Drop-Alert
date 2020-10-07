@@ -2,6 +2,7 @@ const ch = require("cheerio");
 const CronJob = require("cron").CronJob;
 const nodemailer = require("nodemailer");
 const rp = require("request-promise");
+const axios = require("axios");
 const fs = require("fs");
 const { Telegraf } = require("telegraf");
 
@@ -136,14 +137,16 @@ async function scrapPrice(key, response) {
 async function curPrice(url) {
   let amazon = url.includes("amazon");
   let price;
-  let options = {
-    uri: url,
+
+  let response;
+  await axios({
+    method: "get",
+    url: url,
     headers: {
       "User-Agent":
         "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
     },
-  };
-  let response = await rp(options);
+  }).then((res) => (response = res.data));
   if (amazon) {
     for (let i = 0; i < amazonClasses.length; i++) {
       price = await scrapPrice(amazonClasses[i], response);
