@@ -14,15 +14,14 @@ npm install
 
 #### Usage
 
-```
-Put your Bot Token and email credentials and run node bot.js or npm start
-```
+
+Put your Bot Token and email credentials in config.env file and run npm start.
 
 #### What's New
 
-   - Added anydrop command 
-   - fixed issue with amazon deal of the day product 
-   - refactored the code following DRY Rule.
+    - Added anydrop command 
+    - fixed issue with amazon deal of the day product 
+    - refactored the code following DRY Rule.
 
 #### TO DO
 
