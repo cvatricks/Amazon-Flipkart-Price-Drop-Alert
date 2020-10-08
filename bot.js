@@ -92,17 +92,31 @@ async function scrapProductName(url) {
   return productName;
 }
 
-bot.command("list", async (ctx) => {
+bot.command("list", (ctx) => {
   let user = users.find((x) => x.id === ctx.chat.id);
   let msgString = "";
-  ctx.reply("Fetching saved products, give me a sec");
   if (user.tasks.length) {
     for (let i = 0; i < user.tasks.length; i++) {
       msgString += `${i + 1}. ${user.productName[i]}\n`;
+      msgString += "\n";
     }
     msgString +=
-      "\nTo cancle an item use /delete followed by its serial number.\nLike /cancel 1";
+      "\nTo delete an item use /delete followed by its serial number.\nLike /delete 1";
     ctx.reply(msgString);
+  }
+});
+
+bot.command("delete", (ctx) => {
+  let user = users.find((x) => x.id === ctx.chat.id);
+  let prodNum = ctx.message.text;
+  prodNum = +prodNum.slice(8);
+  let i = prodNum - 1;
+  if (prodNum >= 1 && prodNum <= user.tasks.length) {
+    ctx.reply(`Delted ${user.productName[i]} from the list.`);
+    user.prices[i] = null;
+    user.tasks[i] = null;
+    user.initPrice[i] = null;
+    user.productName[i] = null;
   }
 });
 
