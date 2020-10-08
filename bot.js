@@ -41,6 +41,7 @@ bot.command("start", (ctx) => {
     user.tasks = [];
     user.prices = [];
     user.initPrice = [];
+    user.productName = [];
     user.anydrop = false;
     user.kick = true;
     users.push(user);
@@ -52,7 +53,7 @@ bot.command("start", (ctx) => {
 
 bot.command("help", (ctx) => {
   ctx.reply(
-    `Hi, ${ctx.chat.first_name}\nTo get Started send email like\n /email xyz@gmail.com\nfollowed by /track url where url is the link of product\nfollowed by /price xyz where xyz is min price to be allerted.\nUSe /example to see format.\n USe /kick to pause/resume notifications\nUse /anydrop to get notified for any drop in price.`
+    `Hi, ${ctx.chat.first_name}\nTo get Started send email like\n /email xyz@gmail.com\nfollowed by /track url where url is the link of product\nfollowed by /price xyz where xyz is min price to be allerted.\nUSe /example to see format.\n USe /kick to pause/resume notifications\nUse /anydrop to get notified for any drop in price.\nUse /list command to see your saved products.`
   );
   ctx.reply("FIND ME ON GIT: https://github.com/victorakaps");
 });
@@ -73,6 +74,38 @@ bot.command("email", (ctx) => {
   updateData();
 });
 
+async function scrapProductName(url) {
+  let key;
+  url.includes("amazon") ? (key = "title") : (key = "._35KyD6");
+  let response;
+  await axios({
+    method: "get",
+    url: url,
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
+    },
+  }).then((res) => (response = res.data));
+  ch(key, response).each(function () {
+    productName = ch(this).text();
+  });
+  return productName;
+}
+
+bot.command("list", async (ctx) => {
+  let user = users.find((x) => x.id === ctx.chat.id);
+  let msgString = "";
+  ctx.reply("Fetching saved products, give me a sec");
+  if (user.tasks.length) {
+    for (let i = 0; i < user.tasks.length; i++) {
+      msgString += `${i + 1}. ${user.productName[i]}\n`;
+    }
+    msgString +=
+      "\nTo cancle an item use /delete followed by its serial number.\nLike /cancel 1";
+    ctx.reply(msgString);
+  }
+});
+
 bot.command("track", async (ctx) => {
   let str = ctx.message.text;
   link = str.slice(7);
@@ -83,17 +116,20 @@ bot.command("track", async (ctx) => {
     if (price) {
       user.initPrice.push(price);
       ctx.reply(
-        `Current price is ${price}.\nSet min price using /price command.\neg: /price ${
-          price - 150
-        }`
+        `Current price is ${price}.\nSet min price using /price command.\neg: /price ${Math.floor(
+          price - price * 0.1
+        )}`
       );
-      updateData();
     } else {
       ctx.reply("Something went wrong, maybe product is out of stock.");
     }
   } else {
     ctx.reply("PLEASE SEND A VALID LINK.");
   }
+  let prodName = await scrapProductName(link);
+  prodName = prodName.replace("\n", "");
+  user.productName.push(prodName);
+  updateData();
 });
 
 bot.command("log", (ctx) => {
