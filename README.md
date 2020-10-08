@@ -4,7 +4,7 @@
 
 #### CHECK OUT: https://parthsethi.herokuapp.com/bots
 
-<img align="left" src="https://i.imgur.com/cMQu5Jp.png" width="500px"/>
+<img align="left" src="https://i.imgur.com/cMQu5Jp.png" width="600px"/>
 
 #### Installation
 
@@ -14,22 +14,23 @@ npm install
 
 #### Usage
 
-```
-Put your Bot Token and email credentials and run node bot.js or npm start
-```
+
+Put your Bot Token and email credentials in config.env file and run npm start.
 
 #### What's New
 
-    Added anydrop command, fixed issue with amazon deal of the day product, refactored the code following DRY Rule.
+    - Added anydrop command 
+    - fixed issue with amazon deal of the day product 
+    - refactored the code following DRY Rule.
 
 #### TO DO
 
-    Connect it to db, mongoose probably, improve bot interaction and functioning.
+   Connect it to db instead of saving locally, improve bot interaction and functioning.
 
 
 #### Contributing
 
-    Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+   Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 ## License
 
